@@ -3,35 +3,55 @@
  * url http://remysharp.com/2009/01/26/element-in-view-event-plugin/
  */
 (function ($) {
-    function getViewportHeight() {
-        var height = window.innerHeight; // Safari, Opera
+    function getViewportSize() {
+        var mode, domObject, size = { height: window.innerHeight, width: window.innerWidth };
+        
         // if this is correct then return it. iPad has compat Mode, so will
-        // go into check clientHeight (which has the wrong value).
-        if (height) { return height; }
-        var mode = document.compatMode;
-
-        if (mode || !$.support.boxModel) { // IE, Gecko
-            height = mode == 'CSS1Compat' ?
-                document.documentElement.clientHeight : // Standards
-                document.body.clientHeight; // Quirks
+        // go into check clientHeight/clientWidth (which has the wrong value).
+        if (!size.height) {
+            mode = document.compatMode;
+            if (mode || !$.support.boxModel) { // IE, Gecko
+                domObject = mode == 'CSS1Compat' ?
+                    document.documentElement : // Standards
+                    document.body; // Quirks
+                size = {
+                    height: domObject.clientHeight,
+                    width:  domObject.clientWidth
+                };
+            }
         }
 
-        return height;
+        return size;
     }
     
-    function offsetTop(debug) {
+    function getViewportOffset() {
+      return {
+        top:  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
+        left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+      };
+    }
+    
+    function getElementSize($elem) {
+      return {
+        height: $elem.height(),
+        width:  $elem.width()
+      };
+    }
+    
+    function getElementOffset(debug) {
         // Manually calculate offset rather than using jQuery's offset
         // This works-around iOS < 4 on iPad giving incorrect value
         // cf http://bugs.jquery.com/ticket/6446#comment:9
-        var curTop = 0;
-        for (var obj = debug; obj !== null; obj = obj.offsetParent) {
-            curTop += obj.offsetTop;
+        var obj, offset = { top: 0, left: 0 };
+        for (obj = debug; obj !== null; obj = obj.offsetParent) {
+            offset.top  += obj.offsetTop;
+            offset.left += obj.offsetLeft;
         }
-        return curTop;
+        return offset;
     }
 
     function checkInView() {
-        var viewportHeight, scrollTop, elems = [];
+        var viewport, scrollTop, scrollLeft, elems = [];
         
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function () {
@@ -41,27 +61,34 @@
         });
         
         if (elems.length) {
-            viewportHeight = getViewportHeight();
-            scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            viewportSize   = getViewportSize();
+            viewportOffset = getViewportOffset();
 
-            $(elems).each(function () {
-                var $el = $(this),
-                    top = offsetTop(this),
-                    height = $el.height(),
-                    inView = $el.data('inview') || false,
-                    visiblePart;
-
-                if (scrollTop > (top + height) || scrollTop + viewportHeight < top) {
-                    if (inView) {
-                        $el.data('inview', false);
-                        $el.trigger('inview', [false]);                        
-                    }
-                } else if (scrollTop < (top + height)) {
-                    visiblePart = (scrollTop > top ? 'bottom' : (scrollTop + viewportHeight) < (top + height) ? 'top' : 'both');
-                    if (!inView || inView !== visiblePart) {
-                        $el.data('inview', visiblePart);
-                        $el.trigger('inview', [true, visiblePart]);
-                    }
+            $(elems).each(function() {
+                var $el           = $(this),
+                    elementSize   = { height: $el.height(), width: $el.width() },
+                    elementOffset = getElementOffset(this),
+                    inView        = $el.data('inview') || false,
+                    visiblePartY,
+                    visiblePartX,
+                    visiblePartsMerged;
+                
+                if (elementOffset.top + elementSize.height > elementOffset.top &&
+                    elementOffset.top < viewportOffset.top + viewportSize.height &&
+                    elementOffset.left + elementSize.width > viewportOffset.left &&
+                    elementOffset.left < viewportOffset.left + viewportSize.width) {
+                  visiblePartY = (viewportOffset.top > elementOffset.top ?
+                      'bottom' : (viewportOffset.top + viewportSize.height) < (elementOffset.top + elementSize.height) ?
+                      'top' : 'both');
+                  visiblePartX = (viewportOffset.left > elementOffset.left ?
+                      'right' : (viewportOffset.left + viewportSize.width) < (elementOffset.left + elementSize.width) ?
+                      'left' : 'both');
+                  visiblePartsMerged = visiblePartX + "-" + visiblePartY;
+                  if (!inView || inView !== visiblePartsMerged) {
+                      $el.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
+                  }
+                } else if (inView) {
+                  $el.data('inview', false).trigger('inview', [false]);                        
                 }
             });
         }
