@@ -12,8 +12,8 @@
 
         if (mode || !$.support.boxModel) { // IE, Gecko
             height = mode == 'CSS1Compat' ?
-            document.documentElement.clientHeight : // Standards
-            document.body.clientHeight; // Quirks
+                document.documentElement.clientHeight : // Standards
+                document.body.clientHeight; // Quirks
         }
 
         return height;
@@ -31,13 +31,7 @@
     }
 
     function checkInView() {
-        var vpH = getViewportHeight(),
-            scrollTop = (window.pageYOffset ?
-                window.pageYOffset : 
-                document.documentElement.scrollTop ?
-                document.documentElement.scrollTop :
-                document.body.scrollTop),
-            elems = [];
+        var viewportHeight, scrollTop, elems = [];
         
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function () {
@@ -47,22 +41,26 @@
         });
         
         if (elems.length) {
+            viewportHeight = getViewportHeight();
+            scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
             $(elems).each(function () {
                 var $el = $(this),
                     top = offsetTop(this),
                     height = $el.height(),
-                    inview = $el.data('inview') || false;
+                    inView = $el.data('inview') || false,
+                    visiblePart;
 
-                if (scrollTop > (top + height) || scrollTop + vpH < top) {
-                    if (inview) {
+                if (scrollTop > (top + height) || scrollTop + viewportHeight < top) {
+                    if (inView) {
                         $el.data('inview', false);
                         $el.trigger('inview', [false]);                        
                     }
                 } else if (scrollTop < (top + height)) {
-                    var visPart = (scrollTop > top ? 'bottom' : (scrollTop + vpH) < (top + height) ? 'top' : 'both');
-                    if (!inview || inview !== visPart) {
-                        $el.data('inview', visPart);
-                        $el.trigger('inview', [true, visPart]);
+                    visiblePart = (scrollTop > top ? 'bottom' : (scrollTop + viewportHeight) < (top + height) ? 'top' : 'both');
+                    if (!inView || inView !== visiblePart) {
+                        $el.data('inview', visiblePart);
+                        $el.trigger('inview', [true, visiblePart]);
                     }
                 }
             });
