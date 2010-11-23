@@ -69,9 +69,14 @@
                     elementSize   = { height: $el.height(), width: $el.width() },
                     elementOffset = getElementOffset(this),
                     inView        = $el.data('inview') || false,
+                    isVisible     = !(this.offsetHeight === 0 && this.offsetWidth === 0),
                     visiblePartY,
                     visiblePartX,
                     visiblePartsMerged;
+                
+                if (!isVisible) {
+                  return;
+                }
                 
                 if (elementOffset.top + elementSize.height > elementOffset.top &&
                     elementOffset.top < viewportOffset.top + viewportSize.height &&
