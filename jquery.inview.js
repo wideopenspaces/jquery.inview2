@@ -74,6 +74,7 @@
                     visiblePartX,
                     visiblePartsMerged;
                 
+                // Ignore elements that are not visible or not in the DOM tree
                 if (!isVisible) {
                   return;
                 }
