@@ -65,19 +65,18 @@
             viewportOffset = getViewportOffset();
 
             $(elems).each(function() {
+                // Ignore elements that are not visible or not in the DOM tree
+                if (this.offsetHeight === 0 && this.offsetWidth === 0) {
+                  return;
+                }
+                
                 var $el           = $(this),
                     elementSize   = { height: $el.height(), width: $el.width() },
                     elementOffset = getElementOffset(this),
                     inView        = $el.data('inview') || false,
-                    isVisible     = !(this.offsetHeight === 0 && this.offsetWidth === 0),
                     visiblePartY,
                     visiblePartX,
                     visiblePartsMerged;
-                
-                // Ignore elements that are not visible or not in the DOM tree
-                if (!isVisible) {
-                  return;
-                }
                 
                 if (elementOffset.top + elementSize.height > elementOffset.top &&
                     elementOffset.top < viewportOffset.top + viewportSize.height &&
