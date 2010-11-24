@@ -5,8 +5,8 @@ module('jquery.inview', {
     this.size    = 20000;
     this.container = $('<div>');
     this.element = $('<div>', {
-      html: "testing ...",
-      className: "test-element"
+      html: 'testing ...',
+      className: 'test-element'
     }).css({
       width:    '50px',
       height:   '50px',

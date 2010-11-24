@@ -28,7 +28,7 @@ h2. Download
 
 Download jQuery inview event plugin: "http://remysharp.com/downloads/jquery.inview.js":http://remysharp.com/downloads/jquery.inview.js
 
-Or from github at: "http://github.com/zuk/jquery.inview":http://github.com/zuk/jquery.inview
+Or from github at: "http://github.com/protonet/jquery.inview":http://github.com/protonet/jquery.inview
 
 h2. Usage
 
@@ -36,24 +36,18 @@ The script makes use of the new $.support properties - so it will only work with
 
 The event will only fire when the element comes in to view of the viewport, and out of view. It won't keep firing if the user scrolls and the element remains in view.
 
-Bear in mind if think the element may already be in view, you may need to kick the scroll event (using @$(window).scroll()@). If you include this plugin last (i.e. after you've hooked in to the event), then the script will automatically trigger the scroll event - therefore sending the event to your bound element.
-
 The variable after the event argument indicates the visible state in the viewport.
-The third variable (topOrBottomOrBoth) detects which part of viewport is visible to user.
+The third variable visiblePartX detects which horizontal part of the element is visible to the user (possible values: left, right, both)
+The fourth variable visiblePartY detects which vertical part of the element is visible to the user (possible values: top, bottom, both)
 
-bc.. $('div').bind('inview', function (event, visible, topOrBottomOrBoth) {
-  if (visible == true) {
+bc.. $('div').bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
+  if (isInView) {
     // element is now visible in the viewport
-    if (topOrBottomOrBoth == 'top')
-    {
+    if (visiblePartY == 'top') {
       // top part of element is visible
-    }
-    else if (topOrBottomOrBoth == 'bottom')
-    {
+    } else if (visiblePartY == 'bottom') {
       // bottom part of element is visible
-    }
-    else
-    {
+    } else {
       // whole part of element is visible
     }
   } else {
@@ -73,32 +67,27 @@ h2. More complex example
 
 This way we can attach inView to some DIV in our code to, for example, detect when it FULLY readed by user (user sees it's bottom and top) and only after 1 seconds of view, so after we call some out stats function or whatever
 
-bc.. $(someMyOneDiv).bind('inview', function(e,v,t){
-  var o = $(this);
+bc.. $(someMyOneDiv).bind('inview', function(e, isInView, visiblePartX, visiblePartY) {
+  var elem = $(this);
 
-  if(o.data('inviewtimer'))
-  {
-    clearTimeout(o.data('inviewtimer'));
-    o.removeData('inviewtimer');
+  if (elem.data('inviewtimer')) {
+    clearTimeout(elem.data('inviewtimer'));
+    elem.removeData('inviewtimer');
   }
 
-  if(v)
-  {
-    o.data('inviewtimer', setTimeout(function()
-    {
-      if(t == 'top')
-        o.data('seenTop',true);
-      else if(t == 'bottom')
-        o.data('seenBottom',true);
-      else
-      {
-        o.data('seenTop',true);
-        o.data('seenBottom',true);
+  if (isInView) {
+    elem.data('inviewtimer', setTimeout(function() {
+      if (visiblePartY == 'top') {
+        elem.data('seenTop', true);
+      } else if (visiblePartY == 'bottom') {
+        elem.data('seenBottom', true);
+      } else {
+        elem.data('seenTop', true);
+        elem.data('seenBottom', true);
       }
 
-      if( o.data('seenTop') && o.data('seenBottom') )
-      {
-        o.unbind('inview');
+      if (elem.data('seenTop') && elem.data('seenBottom')) {
+        elem.unbind('inview');
         // here we will do WHAT WHE NEED (for ex. Call Ajax stats collector)
         ...
       }

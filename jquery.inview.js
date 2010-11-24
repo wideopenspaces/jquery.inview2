@@ -1,6 +1,7 @@
 /**
- * author Remy Sharp
- * url http://remysharp.com/2009/01/26/element-in-view-event-plugin/
+ * author Christopher Blum
+ *    - based on the idea of Remy Sharp, http://remysharp.com/2009/01/26/element-in-view-event-plugin/
+ *    - forked from http://github.com/zuk/jquery.inview/
  */
 (function ($) {
     function getViewportSize() {
@@ -25,17 +26,17 @@
     }
     
     function getViewportOffset() {
-      return {
-        top:  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
-        left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
-      };
+        return {
+            top:  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
+            left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+        };
     }
     
     function getElementSize($elem) {
-      return {
-        height: $elem.height(),
-        width:  $elem.width()
-      };
+        return {
+            height: $elem.height(),
+            width:  $elem.width()
+        };
     }
     
     function getElementOffset(debug) {
@@ -54,7 +55,7 @@
         var viewport, scrollTop, scrollLeft, elems = [];
         
         // naughty, but this is how it knows which elements to check for
-        $.each($.cache, function () {
+        $.each($.cache, function() {
             if (this.events && this.events.inview) {
                 elems.push(this.handle.elem);
             }
@@ -73,7 +74,7 @@
                 var $el           = $(this),
                     elementSize   = { height: $el.height(), width: $el.width() },
                     elementOffset = getElementOffset(this),
-                    inView        = $el.data('inview') || false,
+                    inView        = $el.data('inview'),
                     visiblePartY,
                     visiblePartX,
                     visiblePartsMerged;
@@ -82,16 +83,16 @@
                     elementOffset.top < viewportOffset.top + viewportSize.height &&
                     elementOffset.left + elementSize.width > viewportOffset.left &&
                     elementOffset.left < viewportOffset.left + viewportSize.width) {
-                  visiblePartY = (viewportOffset.top > elementOffset.top ?
-                      'bottom' : (viewportOffset.top + viewportSize.height) < (elementOffset.top + elementSize.height) ?
-                      'top' : 'both');
-                  visiblePartX = (viewportOffset.left > elementOffset.left ?
-                      'right' : (viewportOffset.left + viewportSize.width) < (elementOffset.left + elementSize.width) ?
-                      'left' : 'both');
-                  visiblePartsMerged = visiblePartX + "-" + visiblePartY;
-                  if (!inView || inView !== visiblePartsMerged) {
-                      $el.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
-                  }
+                    visiblePartY = (viewportOffset.top > elementOffset.top ?
+                        'bottom' : (viewportOffset.top + viewportSize.height) < (elementOffset.top + elementSize.height) ?
+                        'top' : 'both');
+                    visiblePartX = (viewportOffset.left > elementOffset.left ?
+                        'right' : (viewportOffset.left + viewportSize.width) < (elementOffset.left + elementSize.width) ?
+                        'left' : 'both');
+                    visiblePartsMerged = visiblePartX + "-" + visiblePartY;
+                    if (!inView || inView !== visiblePartsMerged) {
+                        $el.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
+                    }
                 } else if (inView) {
                   $el.data('inview', false).trigger('inview', [false]);                        
                 }
