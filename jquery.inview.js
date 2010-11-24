@@ -39,17 +39,20 @@
         };
     }
     
-    function getElementOffset(debug) {
-        // Manually calculate offset rather than using jQuery's offset
-        // This works-around iOS < 4 on iPad giving incorrect value
-        // cf http://bugs.jquery.com/ticket/6446#comment:9
-        var obj, offset = { top: 0, left: 0 };
-        for (obj = debug; obj !== null; obj = obj.offsetParent) {
-            offset.top  += obj.offsetTop;
-            offset.left += obj.offsetLeft;
-        }
-        return offset;
-    }
+    // This method might fix problems on the iPad but therefore fails with elements within
+    // overflow: scroll; elements
+    //
+    // function getElementOffset(debug) {
+    //     // Manually calculate offset rather than using jQuery's offset
+    //     // This works-around iOS < 4 on iPad giving incorrect value
+    //     // cf http://bugs.jquery.com/ticket/6446#comment:9
+    //     var obj, offset = { top: 0, left: 0 };
+    //     for (obj = debug; obj !== null; obj = obj.offsetParent) {
+    //         offset.top  += obj.offsetTop;
+    //         offset.left += obj.offsetLeft;
+    //     }
+    //     return offset;
+    // }
 
     function checkInView() {
         var viewport, scrollTop, scrollLeft, elems = [];
@@ -66,14 +69,14 @@
             viewportOffset = getViewportOffset();
 
             $(elems).each(function() {
-                // Ignore elements that are not visible or not in the DOM tree
-                if (this.offsetHeight === 0 && this.offsetWidth === 0) {
+                // Ignore elements that are not in the DOM tree
+                if (!$.contains(document.documentElement, this)) {
                   return;
                 }
                 
                 var $el           = $(this),
                     elementSize   = { height: $el.height(), width: $el.width() },
-                    elementOffset = getElementOffset(this),
+                    elementOffset = $el.offset(),
                     inView        = $el.data('inview'),
                     visiblePartY,
                     visiblePartX,
@@ -101,7 +104,8 @@
     }
     
     // Use setInterval in order to also make sure this captures elements within
-    // "overflow:scroll" elements
+    // "overflow:scroll" elements or elements that appeared in the dom tree due to
+    // dom manipulation and reflow
     // old:
     // $(window).scroll(checkInView);
     setInterval(checkInView, 250);
