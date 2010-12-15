@@ -1,38 +1,14 @@
-h1. Element 'in view' Event Plugin
+h1. Element 'inview' Event Plugin
 
-*Author:* Remy Sharp
-*Pulled from:* "http://remysharp.com/2009/01/26/element-in-view-event-plugin/":http://remysharp.com/2009/01/26/element-in-view-event-plugin/
+Event that is fired as soon as an element appears in the user's viewport.
 
-*NOTE:* "I" here refers to the original author, Remy Sharp.
-
-I've been preparing a few articles for jQuery for Designers and for .net magazine and in doing so I've had to write a plugin that could prove to be useful to share.
-
-I've created an event that will trigger when the element is scrolled in to the viewport.
-
-h2. Preamble
-
-First of all, this isn't really a plugin. It's a utility of sorts. It's not really a plugin, because you don't call it. It binds on to the scroll event and does the work for you.
-
-Also, I'm aware that there is the lazyload plugin. I've not had real time to play with it, but I suspect there's some similarities, though my inview plugin is extremely stripped down (because I wrote it for a particular purpose). Also note that my code only works for vertical scroll, and not horizontal.
-
-I should also add that this utility/plugin was inspired by Dustin Diaz's detect when an element scrolls in to view code.
-Demo
-
-The example is mostly lorem text, but in the middle of the page is an element whose text reads: "You can't see me". When the element is scrolled in to view it will change to "You found me".
-
-To confirm this, open firebug while the element is out of view, and watch the element in question as you scroll it in to view.
-
-"http://jsbin.com/ugupa":http://jsbin.com/ugupa (to edit: "http://jsbin.com/ugupa/edit":http://jsbin.com/ugupa/edit)
-
-h2. Download
-
-Download jQuery inview event plugin: "http://remysharp.com/downloads/jquery.inview.js":http://remysharp.com/downloads/jquery.inview.js
-
-Or from github at: "http://github.com/protonet/jquery.inview":http://github.com/protonet/jquery.inview
+*Author:* "Christopher Blum":http://twitter.com/ChristopherBlum
+*Original idea and concept by:* "Remy Sharp":http://remysharp.com/2009/01/26/element-in-view-event-plugin/
+*Forked from:* "https://github.com/zuk/jquery.inview/":https://github.com/zuk/jquery.inview/
 
 h2. Usage
 
-The script makes use of the new $.support properties - so it will only work with jQuery 1.3 upwards. If you need to use it with older versions of jQuery, drop a comment, and I'll post an alternative.
+The script makes use of the new $.contains method - so it will only work with jQuery 1.4 upwards. If you need to use it with older versions of jQuery, drop a comment, and I'll post an alternative.
 
 The event will only fire when the element comes in to view of the viewport, and out of view. It won't keep firing if the user scrolls and the element remains in view.
 
@@ -95,14 +71,33 @@ bc.. $(someMyOneDiv).bind('inview', function(e, isInView, visiblePartX, visibleP
   }
 });
 
-p. Maybe there's a way to do this more elegant. And someone needed to test this on IE6-7-8 (they're nasty).
-
 h2. How it works
 
-When the window is scrolled, the event checks the position of the elements against the viewport height and the scrollTop position.
+An interval in the background checks the position of the elements against the viewport dimensions and the scroll position.
 
 However, I wanted to create a utility that would only check the elements that were registered under the 'inview' event, i.e. I didn't want to keep checking the element list if we unbind from the event.
 
 This is achieved by dipping in to the $.cache store within jQuery, and looping through, looking for the elements tied to the 'inview' event.
 
 This way the user can treat it like a native event on the page.
+
+h2. Use cases
+
+* Reduce http requests and traffic on server by loading assets (images, javascript, html, ...) only when they are visible to the user
+* Endless scrolling (twitter-like)
+* Tracking (eg. to see whether a user has read an entire article)
+* ...
+
+h2. Browser Compatibility
+
+h4. The Test Suite succeeds in the following browsers that were tested:
+
+* Firefox 3+
+* Safari 3+
+* Chrome 7+
+* Opera 10+
+* Mobile Safari on iPad iOS 4.2.2+
+
+h4. The Test Suite doesn't succeed but the demos work without problems in the following browsers:
+
+* Mobile WebKit on Android 2.2+
