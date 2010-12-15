@@ -8,9 +8,10 @@ module('jquery.inview', {
       html: 'testing ...',
       className: 'test-element'
     }).css({
-      width:    '50px',
-      height:   '50px',
-      position: 'absolute'
+      background: '#eee',
+      width:      '50px',
+      height:     '50px',
+      position:   'absolute'
     });
   },
 
@@ -181,7 +182,7 @@ test('Check visiblePartX & visiblePartY parameters #1', function() {
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
     equals(visiblePartX, 'left', 'visiblePartX has correct value');
-    equals(visiblePartY, 'top', 'visiblePartX has correct value');
+    equals(visiblePartY, 'top', 'visiblePartY has correct value');
     start();
   });
 });
@@ -198,7 +199,7 @@ test('Check visiblePartX & visiblePartY parameters #2', function() {
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
     equals(visiblePartX, 'both', 'visiblePartX has correct value');
-    equals(visiblePartY, 'top', 'visiblePartX has correct value');
+    equals(visiblePartY, 'top', 'visiblePartY has correct value');
     start();
   });
 });
@@ -215,7 +216,7 @@ test('Check visiblePartX & visiblePartY parameters #3', function() {
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
     equals(visiblePartX, 'both', 'visiblePartX has correct value');
-    equals(visiblePartY, 'both', 'visiblePartX has correct value');
+    equals(visiblePartY, 'both', 'visiblePartY has correct value');
     start();
   });
 });
