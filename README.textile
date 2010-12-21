@@ -39,9 +39,23 @@ p. Remember you can also bind once:
 
 bc.. $('div').one('inview' fn);
 
+h2. Live events
+
+Yep, inview events can also be used with .live/.delegate methods.
+_Please note that this could slow down your app when the selector is too complex and/or matches a huge set of elements._
+The following code snippet only loads images when they appear in the browser's viewport.
+
+bc..  // Assuming that all images have set the _data-src_ attribute instead of the _src_ attribute
+  $("img[data-src]").live("inview", function() {
+    var $this = $(this);
+    $this.attr("src", $this.attr("data-src"));
+    // Remove it from the set of matching elements in order to avoid that the handler gets re-executed
+    $this.removeAttr("data-src");
+  });
+
 h2. More complex example
 
-This way we can attach inView to some DIV in our code to, for example, detect when it FULLY readed by user (user sees it's bottom and top) and only after 1 seconds of view, so after we call some out stats function or whatever
+This way we can attach inview to some DIV in our code to, for example, detect when it FULLY readed by user (user sees it's bottom and top) and only after 1 seconds of view, so after we call some out stats function or whatever
 
 bc.. $(someMyOneDiv).bind('inview', function(e, isInView, visiblePartX, visiblePartY) {
   var elem = $(this);

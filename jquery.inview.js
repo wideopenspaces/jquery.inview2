@@ -40,26 +40,35 @@
     }
 
     function checkInView() {
-        var viewport, scrollTop, scrollLeft, elems = [];
+        var elems = [], elemsLength, i=0;
 
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function() {
             if (this.events && this.events.inview) {
-                elems.push(this.handle.elem);
+                if (this.events.live) {
+                    var context = $(this.handle.elem);
+                    $.each(this.events.live, function() {
+                      elems = elems.concat(context.find(this.selector).toArray());
+                    });
+                } else {
+                    elems.push(this.handle.elem);
+                }
             }
         });
-
-        if (elems.length) {
+        
+        
+        elemsLength = elems.length;
+        if (elemsLength) {
             viewportSize   = getViewportSize();
             viewportOffset = getViewportOffset();
 
-            $(elems).each(function() {
+            for (; i<elemsLength; i++) {
                 // Ignore elements that are not in the DOM tree
-                if (!$.contains(document.documentElement, this)) {
-                  return;
+                if (!$.contains(document.documentElement, elems[i])) {
+                  continue;
                 }
 
-                var $el           = $(this),
+                var $el           = $(elems[i]),
                     elementSize   = { height: $el.height(), width: $el.width() },
                     elementOffset = $el.offset(),
                     inView        = $el.data('inview'),
@@ -84,7 +93,7 @@
                 } else if (inView) {
                   $el.data('inview', false).trigger('inview', [false]);
                 }
-            });
+            };
         }
     }
 

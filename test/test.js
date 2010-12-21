@@ -1,9 +1,11 @@
 module('jquery.inview', {
   setup: function() {
     $(window).scrollTop(0).scrollLeft(0);
-
-    this.size    = 20000;
-    this.container = $('<div>');
+    
+    this.size = 20000;
+    this.container = $('<div>', {
+      className: 'test-container'
+    }).appendTo("body");
     this.element = $('<div>', {
       html: 'testing ...',
       className: 'test-element'
@@ -17,7 +19,7 @@ module('jquery.inview', {
 
   teardown: function() {
     $(window).scrollTop(0).scrollLeft(0);
-
+    
     this.container.remove();
     this.element.remove();
   }
@@ -223,30 +225,40 @@ test('Check visiblePartX & visiblePartY parameters #3', function() {
 
 
 test('Check "live" events', function() {
-  expect(1);
+  expect(3);
   stop(2000);
   
-  $("body > div.test-element").live("inview", function() {
+  var that = this,
+      elems = $("body .test-container > div.test-element");
+  elems.live("inview", function(event) {
+    elems.die("inview");
     ok(true, "Live event correctly fired");
+    equals(event.currentTarget, that.element[0], "event.currentTarget correctly set");
+    equals(this, that.element[0], "Handler bound to target element");
+    start();
   });
   
   this.element.css({
     top: '0',
     left: '0'
-  }).appendTo('body');
+  }).appendTo(this.container);
 });
 
 
 test('Check "delegate" events', function() {
-  expect(1);
+  expect(3);
   stop(2000);
   
-  $("body").delegate(".test-element", "inview", function() {
+  var that = this;
+  this.container.delegate(".test-element", "inview", function(event) {
     ok(true, "Delegated event correctly fired");
+    equals(event.currentTarget, that.element[0], "event.currentTarget correctly set");
+    equals(this, that.element[0], "Handler bound to target element");
+    start();
   });
   
   this.element.css({
     top: '0',
     left: '0'
-  }).appendTo('body');
+  }).appendTo(this.container);
 });
