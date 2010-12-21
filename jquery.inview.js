@@ -100,7 +100,9 @@
     // Use setInterval in order to also make sure this captures elements within
     // "overflow:scroll" elements or elements that appeared in the dom tree due to
     // dom manipulation and reflow
-    // old:
-    // $(window).scroll(checkInView);
+    // old: $(window).scroll(checkInView);
+    //
+    // By the way, iOS (iPad, iPhone, ...) seems to not execute, or at least delays
+    // intervals while the user scrolls. Therefore the inview event might fire a bit late there
     setInterval(checkInView, 250);
 })(jQuery);
