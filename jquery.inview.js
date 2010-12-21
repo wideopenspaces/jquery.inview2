@@ -32,15 +32,15 @@
         };
     }
 
-    function getElementSize($elem) {
+    function getElementSize($element) {
         return {
-            height: $elem.height(),
-            width:  $elem.width()
+            height: $element.height(),
+            width:  $element.width()
         };
     }
 
     function checkInView() {
-        var elems = [], elemsLength, i=0;
+        var elements = [], elementsLength, i = 0;
 
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function() {
@@ -48,30 +48,30 @@
                 if (this.events.live) {
                     var context = $(this.handle.elem);
                     $.each(this.events.live, function() {
-                      elems = elems.concat(context.find(this.selector).toArray());
+                      elements = elements.concat(context.find(this.selector).toArray());
                     });
                 } else {
-                    elems.push(this.handle.elem);
+                    elements.push(this.handle.elem);
                 }
             }
         });
         
         
-        elemsLength = elems.length;
-        if (elemsLength) {
+        elementsLength = elements.length;
+        if (elementsLength) {
             viewportSize   = getViewportSize();
             viewportOffset = getViewportOffset();
 
-            for (; i<elemsLength; i++) {
+            for (; i<elementsLength; i++) {
                 // Ignore elements that are not in the DOM tree
-                if (!$.contains(document.documentElement, elems[i])) {
+                if (!$.contains(document.documentElement, elements[i])) {
                   continue;
                 }
 
-                var $el           = $(elems[i]),
-                    elementSize   = { height: $el.height(), width: $el.width() },
-                    elementOffset = $el.offset(),
-                    inView        = $el.data('inview'),
+                var $element      = $(elements[i]),
+                    elementSize   = { height: $element.height(), width: $element.width() },
+                    elementOffset = $element.offset(),
+                    inView        = $element.data('inview'),
                     visiblePartX,
                     visiblePartY,
                     visiblePartsMerged;
@@ -88,12 +88,12 @@
                         'top' : 'both');
                     visiblePartsMerged = visiblePartX + "-" + visiblePartY;
                     if (!inView || inView !== visiblePartsMerged) {
-                        $el.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
+                        $element.data('inview', visiblePartsMerged).trigger('inview', [true, visiblePartX, visiblePartY]);
                     }
                 } else if (inView) {
-                  $el.data('inview', false).trigger('inview', [false]);
+                  $element.data('inview', false).trigger('inview', [false]);
                 }
-            };
+            }
         }
     }
 
