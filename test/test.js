@@ -220,3 +220,33 @@ test('Check visiblePartX & visiblePartY parameters #3', function() {
     start();
   });
 });
+
+
+test('Check "live" events', function() {
+  expect(1);
+  stop(2000);
+  
+  $("body > div.test-element").live("inview", function() {
+    ok(true, "Live event correctly fired");
+  });
+  
+  this.element.css({
+    top: '0',
+    left: '0'
+  }).appendTo('body');
+});
+
+
+test('Check "delegate" events', function() {
+  expect(1);
+  stop(2000);
+  
+  $("body").delegate(".test-element", "inview", function() {
+    ok(true, "Delegated event correctly fired");
+  });
+  
+  this.element.css({
+    top: '0',
+    left: '0'
+  }).appendTo('body');
+});
