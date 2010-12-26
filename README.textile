@@ -111,9 +111,10 @@ h4. The Test Suite succeeds in the following browsers that were tested:
 * Chrome 7+
 * Opera 10+
 * IE 6+
+* Mobile Safari on iPad 4.2.2
+* Fennec 4b on Android 2.2
+* Opera Mobile 10.1b on Android 2.2
 
 h4. The Test Suite doesn't completely succeed but the demos in this repository work without problems in the following browsers:
 
-* Mobile WebKit on Android 2.2 _(7 of 19 tests fail)_
-* Fennec 4b on Android 2.2 _(3 of 19 tests fail)_
-* Mobile Safari on iPad 4.2.2 _(6 of 19 tests fail)_
+* Mobile WebKit on Android 2.2

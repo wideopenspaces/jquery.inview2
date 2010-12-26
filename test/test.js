@@ -178,13 +178,13 @@ test('Check visiblePartX & visiblePartY parameters #1', function() {
   stop(2000);
 
   this.element.css({
-    right: '-25px',
-    bottom: '-25px'
+    top: '-25px',
+    left: '-25px'
   }).appendTo('body');
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
-    equals(visiblePartX, 'left', 'visiblePartX has correct value');
-    equals(visiblePartY, 'top', 'visiblePartY has correct value');
+    equals(visiblePartX, 'right', 'visiblePartX has correct value');
+    equals(visiblePartY, 'bottom', 'visiblePartY has correct value');
     start();
   });
 });
@@ -195,13 +195,13 @@ test('Check visiblePartX & visiblePartY parameters #2', function() {
   stop(2000);
 
   this.element.css({
-    right: '0',
-    bottom: '-25px'
+    top: '0',
+    left: '-25px'
   }).appendTo('body');
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
-    equals(visiblePartX, 'both', 'visiblePartX has correct value');
-    equals(visiblePartY, 'top', 'visiblePartY has correct value');
+    equals(visiblePartX, 'right', 'visiblePartX has correct value');
+    equals(visiblePartY, 'both', 'visiblePartY has correct value');
     start();
   });
 });
@@ -212,8 +212,8 @@ test('Check visiblePartX & visiblePartY parameters #3', function() {
   stop(2000);
 
   this.element.css({
-    right: '0',
-    bottom: '0'
+    top: '0',
+    left: '0'
   }).appendTo('body');
 
   this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
