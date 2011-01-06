@@ -5,6 +5,8 @@ Event that is fired as soon as an element appears in the user's viewport.
 *Author:* "Christopher Blum":http://twitter.com/ChristopherBlum
 *Original idea and concept by:* "Remy Sharp":http://remysharp.com/2009/01/26/element-in-view-event-plugin/
 *Forked from:* "https://github.com/zuk/jquery.inview/":https://github.com/zuk/jquery.inview/
+*Demo* (loading lolcats when they scroll into view): "http://tifftiff.de/jquery.inview/example/live_event.html":http://tifftiff.de/jquery.inview/example/live_event.html
+*Requires:* jQuery 1.4+
 
 h2. Usage
 
@@ -118,3 +120,4 @@ h4. The Test Suite succeeds in the following browsers that were tested:
 h4. The Test Suite doesn't completely succeed but the demos in this repository work without problems in the following browsers:
 
 * Mobile WebKit on Android 2.2
+* Mobile WebKit on Palm Pre 1
