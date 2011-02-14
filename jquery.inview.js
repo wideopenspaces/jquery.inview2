@@ -48,7 +48,9 @@
                 if (this.events.live) {
                     var context = $(this.handle.elem);
                     $.each(this.events.live, function() {
-                      elements = elements.concat(context.find(this.selector).toArray());
+                        if (this.origType === 'inview') {
+                            elements = elements.concat(context.find(this.selector).toArray());
+                        }
                     });
                 } else {
                     elements.push(this.handle.elem);
@@ -76,9 +78,9 @@
                     visiblePartY,
                     visiblePartsMerged;
 
-                if (elementOffset.top + elementSize.height > elementOffset.top &&
+                if (elementOffset.top + elementSize.height >= elementOffset.top &&
                     elementOffset.top < viewportOffset.top + viewportSize.height &&
-                    elementOffset.left + elementSize.width > viewportOffset.left &&
+                    elementOffset.left + elementSize.width >= viewportOffset.left &&
                     elementOffset.left < viewportOffset.left + viewportSize.width) {
                     visiblePartX = (viewportOffset.left > elementOffset.left ?
                         'right' : (viewportOffset.left + viewportSize.width) < (elementOffset.left + elementSize.width) ?
