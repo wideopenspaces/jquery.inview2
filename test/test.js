@@ -262,3 +262,19 @@ test('Check "delegate" events', function() {
     left: '0'
   }).appendTo(this.container);
 });
+
+
+test('Check namespaced "delegate" events', function() {
+  expect(1);
+  stop(2000);
+  
+  this.container.delegate(".test-element", "inview.foo", function(event) {
+    ok(true, "Delegated event correctly fired");
+    start();
+  });
+  
+  this.element.css({
+    top: '0',
+    left: '0'
+  }).appendTo(this.container);
+});

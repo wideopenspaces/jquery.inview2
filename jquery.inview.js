@@ -32,32 +32,37 @@
         };
     }
 
-    function getElementSize($element) {
-        return {
-            height: $element.height(),
-            width:  $element.width()
-        };
-    }
-
     function checkInView() {
-        var elements = [], elementsLength, i = 0;
+        var elements = [], elementsLength, i = 0, viewportSize, viewportOffset;
 
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function() {
-            if (this.events && this.events.inview) {
-                if (this.events.live) {
-                    var context = $(this.handle.elem);
-                    $.each(this.events.live, function() {
-                        if (this.origType === 'inview') {
+            var cacheObj = this,
+                events,
+                i;
+            if (!cacheObj.events) {
+                // Needed for jQuery 1.5+
+                for (i in this) {
+                    cacheObj = this[i]
+                    events = cacheObj && cacheObj.events;
+                    if (events) { break; }
+                }
+            }
+            
+            events = cacheObj && cacheObj.events;
+            if (events && events.inview) {
+                if (events.live) {
+                    var context = $(cacheObj.handle.elem);
+                    $.each(events.live, function() {
+                        if (this.origType.substr(0, 6) === 'inview') {
                             elements = elements.concat(context.find(this.selector).toArray());
                         }
                     });
                 } else {
-                    elements.push(this.handle.elem);
+                    elements.push(cacheObj.handle.elem);
                 }
             }
         });
-        
         
         elementsLength = elements.length;
         if (elementsLength) {
