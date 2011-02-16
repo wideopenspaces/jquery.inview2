@@ -36,8 +36,8 @@
         var elements = [], elementsLength, i = 0, viewportSize, viewportOffset, expando = $.expando;
 
         // naughty, but this is how it knows which elements to check for
-        $.each($.cache, function() {
-            var cacheObj = this, events = cacheObj.events;
+        $.each($.cache, function(i, cacheObj) {
+            var events = cacheObj.events;
             if (!events) {
                 // needed for jQuery 1.5+
                 cacheObj = this[expando];
