@@ -38,9 +38,9 @@
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function() {
             var cacheObj = this,
-                events,
+                events   = cacheObj.events,
                 i;
-            if (!cacheObj.events) {
+            if (!events) {
                 // Needed for jQuery 1.5+
                 for (i in this) {
                     cacheObj = this[i]
@@ -49,7 +49,6 @@
                 }
             }
             
-            events = cacheObj && cacheObj.events;
             if (events && events.inview) {
                 if (events.live) {
                     var context = $(cacheObj.handle.elem);
