@@ -12,7 +12,7 @@
         if (!size.height) {
             mode = document.compatMode;
             if (mode || !$.support.boxModel) { // IE, Gecko
-                domObject = mode == 'CSS1Compat' ?
+                domObject = mode === 'CSS1Compat' ?
                     document.documentElement : // Standards
                     document.body; // Quirks
                 size = {
@@ -33,20 +33,15 @@
     }
 
     function checkInView() {
-        var elements = [], elementsLength, i = 0, viewportSize, viewportOffset;
+        var elements = [], elementsLength, i = 0, viewportSize, viewportOffset, expando = $.expando;
 
         // naughty, but this is how it knows which elements to check for
         $.each($.cache, function() {
-            var cacheObj = this,
-                events   = cacheObj.events,
-                i;
+            var cacheObj = this, events = cacheObj.events;
             if (!events) {
-                // Needed for jQuery 1.5+
-                for (i in this) {
-                    cacheObj = this[i]
-                    events = cacheObj && cacheObj.events;
-                    if (events) { break; }
-                }
+                // needed for jQuery 1.5+
+                cacheObj = this[expando];
+                events = cacheObj && cacheObj.events;
             }
             
             if (events && events.inview) {
