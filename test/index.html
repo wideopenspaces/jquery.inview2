@@ -4,9 +4,16 @@
     <title>QUnit Test Suite</title>
     <meta name="viewport" content="initial-scale=1.0, width=device-width, height=device-height">
     <link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css">
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-    <script src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
     <script src="../jquery.inview.js"></script>
+    <script>window["jQuery 1.4"] = $.noConflict(true);</script>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="../jquery.inview.js"></script>
+    <script>window["jQuery 1.5"] = $.noConflict(true);</script>
+    
+    <script src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
     <script src="test.js"></script>
   </head>
   <body>
