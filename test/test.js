@@ -1,7 +1,7 @@
 window["jQuery 1.5"].each(['jQuery 1.4', 'jQuery 1.5'], function(i, version) {
   var jQuery  = window[version],
       $       = jQuery;
-  
+
   module('jquery.inview - ' + version, {
     setup: function() {
       $(window).scrollTop(0).scrollLeft(0);
@@ -172,6 +172,42 @@ window["jQuery 1.5"].each(['jQuery 1.4', 'jQuery 1.5'], function(i, version) {
       ok(false, 'Callback shouldn\'t be fired since the element isn\'t even in the dom tree');
       start();
     });
+
+    setTimeout(function() { start(); }, 1000);
+  });
+
+
+  test('Check whether element which is on the top outside of viewport is not firing the event', function() {
+    expect(0);
+    stop(2000);
+
+    this.element.bind('inview', function(event, isInView) {
+      ok(false, 'Callback shouldn\'t be fired since the element is outside of viewport');
+      start();
+    });
+
+    this.element.css({
+      top: '-50px',
+      left: '50px'
+    }).appendTo('body');
+
+    setTimeout(function() { start(); }, 1000);
+  });
+
+
+  test('Check whether element which is on the left outside of viewport is not firing the event', function() {
+    expect(0);
+    stop(2000);
+
+    this.element.bind('inview', function(event, isInView) {
+      ok(false, 'Callback shouldn\'t be fired since the element is outside of viewport');
+      start();
+    });
+
+    this.element.css({
+      top: '50px',
+      left: '-50px'
+    }).appendTo('body');
 
     setTimeout(function() { start(); }, 1000);
   });
