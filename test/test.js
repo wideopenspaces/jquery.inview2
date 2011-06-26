@@ -1,4 +1,6 @@
-window["jQuery 1.5"].each(['jQuery 1.4', 'jQuery 1.5'], function(i, version) {
+QUnit.config.reorder = false;
+
+window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i, version) {
   var jQuery  = window[version],
       $       = jQuery;
 
@@ -8,11 +10,11 @@ window["jQuery 1.5"].each(['jQuery 1.4', 'jQuery 1.5'], function(i, version) {
 
       this.size = 20000;
       this.container = $('<div>', {
-        className: 'test-container'
+        "class": 'test-container'
       }).appendTo("body");
       this.element = $('<div>', {
         html: 'testing ...',
-        className: 'test-element'
+        "class": 'test-element'
       }).css({
         background: '#eee',
         width:      '50px',
@@ -267,7 +269,7 @@ window["jQuery 1.5"].each(['jQuery 1.4', 'jQuery 1.5'], function(i, version) {
   test('Check "live" events', function() {
     expect(3);
     stop(2000);
-
+    
     var that = this,
         elems = $("body .test-container > div.test-element");
     elems.live("inview", function(event) {
