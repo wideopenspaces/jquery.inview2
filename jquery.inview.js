@@ -4,7 +4,7 @@
  *    - forked from http://github.com/zuk/jquery.inview/
  */
 (function ($) {
-  var inviewObjects = {};
+  var inviewObjects = {}, viewportSize, viewportOffset, d = document, w = window, root = d.documentElement;
   
   $.event.special.inview = {
     add: function(data) {
@@ -17,16 +17,16 @@
   };
   
   function getViewportSize() {
-    var mode, domObject, size = { height: window.innerHeight, width: window.innerWidth };
+    var mode, domObject, size = { height: w.innerHeight, width: w.innerWidth };
 
     // if this is correct then return it. iPad has compat Mode, so will
     // go into check clientHeight/clientWidth (which has the wrong value).
     if (!size.height) {
-      mode = document.compatMode;
+      mode = d.compatMode;
       if (mode || !$.support.boxModel) { // IE, Gecko
         domObject = mode === 'CSS1Compat' ?
-          document.documentElement : // Standards
-          document.body; // Quirks
+          de : // Standards
+          d.body; // Quirks
         size = {
           height: domObject.clientHeight,
           width:  domObject.clientWidth
@@ -39,13 +39,16 @@
 
   function getViewportOffset() {
     return {
-      top:  window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
-      left: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft
+      top:  w.pageYOffset || root.scrollTop || d.body.scrollTop,
+      left: w.pageXOffset || root.scrollLeft || d.body.scrollLeft
     };
   }
 
   function checkInView() {
-    var elements = [], elementsLength, i = 0, viewportSize, viewportOffset;
+    var elements = [], elementsLength, i = 0;
+    
+    viewportSize   = viewportSize   || getViewportSize();
+    viewportOffset = viewportOffset || getViewportOffset();
     
     $.each(inviewObjects, function(i, inviewObject) {
       var data      = inviewObject.data,
@@ -59,12 +62,9 @@
     
     elementsLength = elements.length;
     if (elementsLength) {
-      viewportSize   = getViewportSize();
-      viewportOffset = getViewportOffset();
-
       for (; i<elementsLength; i++) {
         // Ignore elements that are not in the DOM tree
-        if (!$.contains(document.documentElement, elements[i])) {
+        if (!$.contains(root, elements[i])) {
           continue;
         }
 
@@ -95,7 +95,11 @@
       }
     }
   }
-
+  
+  $(w).bind("scroll resize", function() {
+    viewportSize = viewportOffset = null;
+  });
+  
   // Use setInterval in order to also make sure this captures elements within
   // "overflow:scroll" elements or elements that appeared in the dom tree due to
   // dom manipulation and reflow
