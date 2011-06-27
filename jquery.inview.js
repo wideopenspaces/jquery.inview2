@@ -4,7 +4,7 @@
  *    - forked from http://github.com/zuk/jquery.inview/
  */
 (function ($) {
-  var inviewObjects = {}, viewportSize, viewportOffset, d = document, w = window, root = d.documentElement;
+  var inviewObjects = {}, viewportSize, viewportOffset, d = document, w = window, documentElement = d.documentElement;
   
   $.event.special.inview = {
     add: function(data) {
@@ -25,7 +25,7 @@
       mode = d.compatMode;
       if (mode || !$.support.boxModel) { // IE, Gecko
         domObject = mode === 'CSS1Compat' ?
-          de : // Standards
+          documentElement : // Standards
           d.body; // Quirks
         size = {
           height: domObject.clientHeight,
@@ -39,36 +39,32 @@
 
   function getViewportOffset() {
     return {
-      top:  w.pageYOffset || root.scrollTop || d.body.scrollTop,
-      left: w.pageXOffset || root.scrollLeft || d.body.scrollLeft
+      top:  w.pageYOffset || documentElement.scrollTop   || d.body.scrollTop,
+      left: w.pageXOffset || documentElement.scrollLeft  || d.body.scrollLeft
     };
   }
 
   function checkInView() {
-    var elements = [], elementsLength, i = 0;
-    
-    viewportSize   = viewportSize   || getViewportSize();
-    viewportOffset = viewportOffset || getViewportOffset();
+    var $elements = $(), elementsLength, i = 0;
     
     $.each(inviewObjects, function(i, inviewObject) {
-      var data      = inviewObject.data,
+      var selector  = inviewObject.data.selector,
           $element  = inviewObject.$element;
-      if (data.selector) {
-        elements = elements.concat($element.find(data.selector).toArray());
-      } else {
-        elements.push($element[0]);
-      }
+      $elements = $elements.add(selector ? $element.find(selector) : $element);
     });
     
-    elementsLength = elements.length;
+    elementsLength = $elements.length;
     if (elementsLength) {
+      viewportSize   = viewportSize   || getViewportSize();
+      viewportOffset = viewportOffset || getViewportOffset();
+      
       for (; i<elementsLength; i++) {
         // Ignore elements that are not in the DOM tree
-        if (!$.contains(root, elements[i])) {
+        if (!$.contains(documentElement, $elements[i])) {
           continue;
         }
 
-        var $element      = $(elements[i]),
+        var $element      = $($elements[i]),
             elementSize   = { height: $element.height(), width: $element.width() },
             elementOffset = $element.offset(),
             inView        = $element.data('inview'),
