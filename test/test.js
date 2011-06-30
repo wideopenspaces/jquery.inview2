@@ -330,7 +330,7 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
     stop(2000);
 
     var i = 0;
-    console.log("------------");
+
     this.element.add(this.element2).css({
       top: '0',
       left: '0'
