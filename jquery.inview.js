@@ -4,18 +4,19 @@
  *    - forked from http://github.com/zuk/jquery.inview/
  */
 (function ($) {
-  var inviewObjects = {}, viewportSize, viewportOffset, d = document, w = window, documentElement = d.documentElement;
-  
+  var inviewObjects = {}, viewportSize, viewportOffset,
+      d = document, w = window, documentElement = d.documentElement, expando = $.expando;
+
   $.event.special.inview = {
     add: function(data) {
-      inviewObjects[data.guid] = { data: data, $element: $(this) };
+      inviewObjects[data.guid + "-" + this[expando]] = { data: data, $element: $(this) };
     },
-    
+
     remove: function(data) {
-      try { delete inviewObjects[data.guid]; } catch(e) {}
+      try { delete inviewObjects[data.guid + "-" + this[expando]]; } catch(e) {}
     }
   };
-  
+
   function getViewportSize() {
     var mode, domObject, size = { height: w.innerHeight, width: w.innerWidth };
 
@@ -46,18 +47,18 @@
 
   function checkInView() {
     var $elements = $(), elementsLength, i = 0;
-    
+
     $.each(inviewObjects, function(i, inviewObject) {
       var selector  = inviewObject.data.selector,
           $element  = inviewObject.$element;
       $elements = $elements.add(selector ? $element.find(selector) : $element);
     });
-    
+
     elementsLength = $elements.length;
     if (elementsLength) {
       viewportSize   = viewportSize   || getViewportSize();
       viewportOffset = viewportOffset || getViewportOffset();
-      
+
       for (; i<elementsLength; i++) {
         // Ignore elements that are not in the DOM tree
         if (!$.contains(documentElement, $elements[i])) {
@@ -91,11 +92,11 @@
       }
     }
   }
-  
+
   $(w).bind("scroll resize", function() {
     viewportSize = viewportOffset = null;
   });
-  
+
   // Use setInterval in order to also make sure this captures elements within
   // "overflow:scroll" elements or elements that appeared in the dom tree due to
   // dom manipulation and reflow

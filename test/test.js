@@ -12,6 +12,7 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
       this.container = $('<div>', {
         "class": 'test-container'
       }).appendTo("body");
+
       this.element = $('<div>', {
         html: 'testing ...',
         "class": 'test-element'
@@ -21,6 +22,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
         height:     '50px',
         position:   'absolute'
       });
+
+      this.element2 = this.element.clone();
     },
 
     teardown: function() {
@@ -320,4 +323,25 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
       left: '0'
     }).appendTo(this.container);
   });
+
+
+  test('Check multiple elements', function() {
+    expect(2);
+    stop(2000);
+
+    var i = 0;
+    console.log("------------");
+    this.element.add(this.element2).css({
+      top: '0',
+      left: '0'
+    }).appendTo(this.container);
+
+    $('.test-element').bind('inview', function() {
+      ok(true);
+      if (++i == 2) {
+        start();
+      }
+    });
+  });
+
 });
