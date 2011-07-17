@@ -75,7 +75,6 @@
         
         // Don't ask me why because I haven't figured out yet:
         // viewportOffset and viewportSize are sometimes suddenly null in Firefox 5.
-        // There's no logical 
         // Even though it sounds weird:
         // It seems that the execution of this function is interferred by the onresize/onscroll event
         // where viewportOffset and viewportSize are unset
