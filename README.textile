@@ -39,7 +39,7 @@ bc.. $('div').unbind('inview');
 
 p. Remember you can also bind once:
 
-bc.. $('div').one('inview' fn);
+bc.. $('div').one('inview', fn);
 
 h2. Live events
 
@@ -47,7 +47,7 @@ Yep, inview events can also be used with .live/.delegate methods.
 _Please note that this could slow down your app when the selector is too complex and/or matches a huge set of elements._
 The following code snippet only loads images when they appear in the browser's viewport.
 
-bc..  // Assuming that all images have set the _data-src_ attribute instead of the _src_ attribute
+bc..  // Assuming that all images have set the 'data-src' attribute instead of the 'src'attribute
   $("img[data-src]").live("inview", function() {
     var $this = $(this);
     $this.attr("src", $this.attr("data-src"));
