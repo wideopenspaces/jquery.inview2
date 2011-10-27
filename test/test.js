@@ -1,6 +1,4 @@
-QUnit.config.reorder = false;
-
-window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i, version) {
+window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7'], function(i, version) {
   var jQuery  = window[version],
       $       = jQuery;
 
@@ -35,9 +33,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check vertical scrolling', function() {
+  asyncTest('Check vertical scrolling', function() {
     expect(5);
-    stop(10000);
 
     var element = this.element,
         firstCall,
@@ -51,7 +48,6 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
 
     setTimeout(function() {
       $(window).scrollTop(0).scrollLeft(0);
-
       ok(!firstCall, 'inview shouldn\'t be triggered initially when the element isn\'t in the viewport');
       element.unbind('inview.firstCall');
       element.bind('inview.secondCall', function(event, inViewParam) {
@@ -85,9 +81,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check horizontal scrolling', function() {
+  asyncTest('Check horizontal scrolling', function() {
     expect(5);
-    stop(10000);
 
     var element = this.element,
         firstCall,
@@ -135,9 +130,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Move element into viewport without scrolling', function() {
+  asyncTest('Move element into viewport without scrolling', function() {
     expect(3);
-    stop(10000);
 
     var element = this.element, calls = 0;
 
@@ -169,9 +163,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check whether element which isn\'t in the dom tree triggers the callback', function() {
+  asyncTest('Check whether element which isn\'t in the dom tree triggers the callback', function() {
     expect(0);
-    stop(2000);
 
     this.element.bind('inview', function(event, isInView) {
       ok(false, 'Callback shouldn\'t be fired since the element isn\'t even in the dom tree');
@@ -182,9 +175,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check whether element which is on the top outside of viewport is not firing the event', function() {
+  asyncTest('Check whether element which is on the top outside of viewport is not firing the event', function() {
     expect(0);
-    stop(2000);
 
     this.element.bind('inview', function(event, isInView) {
       ok(false, 'Callback shouldn\'t be fired since the element is outside of viewport');
@@ -200,9 +192,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check whether element which is on the left outside of viewport is not firing the event', function() {
+  asyncTest('Check whether element which is on the left outside of viewport is not firing the event', function() {
     expect(0);
-    stop(2000);
 
     this.element.bind('inview', function(event, isInView) {
       ok(false, 'Callback shouldn\'t be fired since the element is outside of viewport');
@@ -218,9 +209,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check visiblePartX & visiblePartY parameters #1', function() {
+  asyncTest('Check visiblePartX & visiblePartY parameters #1', function() {
     expect(2);
-    stop(2000);
 
     this.element.css({
       top: '-25px',
@@ -235,9 +225,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check visiblePartX & visiblePartY parameters #2', function() {
+  asyncTest('Check visiblePartX & visiblePartY parameters #2', function() {
     expect(2);
-    stop(2000);
 
     this.element.css({
       top: '0',
@@ -252,9 +241,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check visiblePartX & visiblePartY parameters #3', function() {
+  asyncTest('Check visiblePartX & visiblePartY parameters #3', function() {
     expect(2);
-    stop(2000);
 
     this.element.css({
       top: '0',
@@ -269,9 +257,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check "live" events', function() {
+  asyncTest('Check "live" events', function() {
     expect(3);
-    stop(2000);
     
     var that = this,
         elems = $("body .test-container > div.test-element");
@@ -290,9 +277,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check "delegate" events', function() {
+  asyncTest('Check "delegate" events', function() {
     expect(3);
-    stop(2000);
 
     var that = this;
     this.container.delegate(".test-element", "inview", function(event) {
@@ -309,9 +295,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check namespaced "delegate" events', function() {
+  asyncTest('Check namespaced "delegate" events', function() {
     expect(1);
-    stop(2000);
 
     this.container.delegate(".test-element", "inview.foo", function(event) {
       ok(true, "Delegated event correctly fired");
@@ -325,9 +310,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6'], function(i
   });
 
 
-  test('Check multiple elements', function() {
+  asyncTest('Check multiple elements', function() {
     expect(2);
-    stop(2000);
 
     var i = 0;
 
