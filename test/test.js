@@ -144,17 +144,17 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
 
     setTimeout(function() {
 
-      equals(calls, 0, 'Callback hasn\'t been fired since the element isn\'t in the viewport');
+      equal(calls, 0, 'Callback hasn\'t been fired since the element isn\'t in the viewport');
       element.css({ left: 0 });
 
       setTimeout(function() {
 
-        equals(calls, 1, 'Callback has been fired after the element appeared in the viewport');
+        equal(calls, 1, 'Callback has been fired after the element appeared in the viewport');
         element.css({ left: '10000px' });
 
         setTimeout(function() {
 
-          equals(calls, 2, 'Callback has been fired after the element disappeared from viewport');
+          equal(calls, 2, 'Callback has been fired after the element disappeared from viewport');
           start();
 
         }, 1000);
@@ -220,8 +220,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
     }).appendTo('body');
 
     this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
-      equals(visiblePartX, 'right', 'visiblePartX has correct value');
-      equals(visiblePartY, 'bottom', 'visiblePartY has correct value');
+      equal(visiblePartX, 'right', 'visiblePartX has correct value');
+      equal(visiblePartY, 'bottom', 'visiblePartY has correct value');
       start();
     });
   });
@@ -236,8 +236,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
     }).appendTo('body');
 
     this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
-      equals(visiblePartX, 'right', 'visiblePartX has correct value');
-      equals(visiblePartY, 'both', 'visiblePartY has correct value');
+      equal(visiblePartX, 'right', 'visiblePartX has correct value');
+      equal(visiblePartY, 'both', 'visiblePartY has correct value');
       start();
     });
   });
@@ -252,8 +252,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
     }).appendTo('body');
 
     this.element.bind('inview', function(event, isInView, visiblePartX, visiblePartY) {
-      equals(visiblePartX, 'both', 'visiblePartX has correct value');
-      equals(visiblePartY, 'both', 'visiblePartY has correct value');
+      equal(visiblePartX, 'both', 'visiblePartX has correct value');
+      equal(visiblePartY, 'both', 'visiblePartY has correct value');
       start();
     });
   });
@@ -267,8 +267,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
     elems.live("inview", function(event) {
       elems.die("inview");
       ok(true, "Live event correctly fired");
-      equals(event.currentTarget, that.element[0], "event.currentTarget correctly set");
-      equals(this, that.element[0], "Handler bound to target element");
+      equal(event.currentTarget, that.element[0], "event.currentTarget correctly set");
+      equal(this, that.element[0], "Handler bound to target element");
       start();
     });
 
@@ -285,8 +285,8 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
     var that = this;
     this.container.delegate(".test-element", "inview", function(event) {
       ok(true, "Delegated event correctly fired");
-      equals(event.currentTarget, that.element[0], "event.currentTarget correctly set");
-      equals(this, that.element[0], "Handler bound to target element");
+      equal(event.currentTarget, that.element[0], "event.currentTarget correctly set");
+      equal(this, that.element[0], "Handler bound to target element");
       start();
     });
 
