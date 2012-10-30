@@ -329,5 +329,28 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
       }
     });
   });
+  
+  if (!("ontouchstart" in window)) {
+    asyncTest('Scroll to element via focus()', function() {
+      // This test will fail on iOS
 
+      expect(1);
+
+      var $input = $("<input>").css({
+        position: "absolute",
+        top: "7000px",
+        left: "5000px"
+      }).appendTo(this.container);
+
+      $input.bind('inview', function() {
+        ok(true);
+        $input.remove();
+        start();
+      });
+
+      setTimeout(function() {
+        $input.focus();
+      }, 1000);
+    });
+  }
 });
