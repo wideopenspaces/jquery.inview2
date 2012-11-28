@@ -312,6 +312,29 @@ window['jQuery 1.6'].each(['jQuery 1.4', 'jQuery 1.5', 'jQuery 1.6', 'jQuery 1.7
   });
 
 
+  asyncTest('Check hidden element', function() {
+    var that = this;
+    
+    expect(1);
+    
+    this.hiddenElement = $("<span>", { text: "foo" });
+    this.hiddenElement.hide();
+    this.hiddenElement.bind("inview", function() {
+      ok(false, "display: none; should not trigger inview event");
+    });
+    this.hiddenElement.prependTo("body");
+    
+    setTimeout(function() {
+      that.hiddenElement.unbind("inview");
+      that.hiddenElement.bind("inview", function() {
+        ok(true, "display: block; should trigger inview event");
+        that.hiddenElement.remove();
+        start();
+      });
+      that.hiddenElement.show();
+    }, 1000);
+  });
+
   asyncTest('Check multiple elements', function() {
     expect(2);
 
