@@ -65,8 +65,7 @@
           continue;
         }
 
-        var element       = $elements[i],
-            $element      = $(element),
+        var $element      = $($elements[i]),
             elementSize   = { height: $element.height(), width: $element.width() },
             elementOffset = $element.offset(),
             inView        = $element.data('inview'),
@@ -83,8 +82,7 @@
           return;
         }
         
-        if (element.offsetWidth > 0 && element.offsetHeight > 0 && element.style.display != "none" &&
-            elementOffset.top + elementSize.height > viewportOffset.top &&
+        if (elementOffset.top + elementSize.height > viewportOffset.top &&
             elementOffset.top < viewportOffset.top + viewportSize.height &&
             elementOffset.left + elementSize.width > viewportOffset.left &&
             elementOffset.left < viewportOffset.left + viewportSize.width) {
