@@ -5,15 +5,35 @@
  */
 (function ($) {
   var inviewObjects = {}, viewportSize, viewportOffset,
-      d = document, w = window, documentElement = d.documentElement, expando = $.expando;
+      d = document, w = window, documentElement = d.documentElement, expando = $.expando, timer;
 
   $.event.special.inview = {
     add: function(data) {
       inviewObjects[data.guid + "-" + this[expando]] = { data: data, $element: $(this) };
+
+      // Use setInterval in order to also make sure this captures elements within
+      // "overflow:scroll" elements or elements that appeared in the dom tree due to
+      // dom manipulation and reflow
+      // old: $(window).scroll(checkInView);
+      //
+      // By the way, iOS (iPad, iPhone, ...) seems to not execute, or at least delays
+      // intervals while the user scrolls. Therefore the inview event might fire a bit late there
+      // 
+      // Don't waste cycles with an interval until we get at least one element that
+      // has bound to the inview event.  
+      if (!timer && !$.isEmptyObject(inviewObjects)) {
+         timer = setInterval(checkInView, 250);
+      }
     },
 
     remove: function(data) {
       try { delete inviewObjects[data.guid + "-" + this[expando]]; } catch(e) {}
+
+      // Clear interval when we no longer have any elements listening
+      if ($.isEmptyObject(inviewObjects)) {
+         clearInterval(timer);
+         timer = null;
+      }
     }
   };
 
@@ -113,13 +133,4 @@
       viewportOffset = null;
     });
   }
-
-  // Use setInterval in order to also make sure this captures elements within
-  // "overflow:scroll" elements or elements that appeared in the dom tree due to
-  // dom manipulation and reflow
-  // old: $(window).scroll(checkInView);
-  //
-  // By the way, iOS (iPad, iPhone, ...) seems to not execute, or at least delays
-  // intervals while the user scrolls. Therefore the inview event might fire a bit late there
-  setInterval(checkInView, 250);
 })(jQuery);
