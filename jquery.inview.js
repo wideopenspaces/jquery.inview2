@@ -27,7 +27,7 @@
       // Don't waste cycles with an interval until we get at least one element that
       // has bound to the inview event.  
       if (!timer && !$.isEmptyObject(inviewObjects)) {
-         timer = setInterval(checkInView, 250);
+         timer = setInterval(checkInView, 333);
       }
     },
 
