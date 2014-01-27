@@ -44,7 +44,7 @@
 
   function checkInView() {
     // Fuck IE and its quirks, we're doing this the right way.
-    var $elements = $(), elementsLength, i = 0;
+    var $elements = $();
 
     $.each(inviewObjects, function(i, inviewObject) {
       var selector  = inviewObject.data.selector,
@@ -52,7 +52,7 @@
       $elements = $elements.add(selector ? $element.find(selector) : $element);
     });
 
-    if (elements.length) {
+    if ($elements.length) {
       for (var i = 0; i < $elements.length; i++) {
         if (!$elements[i]) {
           continue;
@@ -61,9 +61,9 @@
           continue;
         }
 
-        var el = $elements[i],
-            inView = el.data('inview'),
-            rect = el.getBoundingClientRect();
+        var $el = $($elements[i]),
+            inView = $el.data('inview'),
+            rect = $el[0].getBoundingClientRect();
         
         if (rect.top >= 0 &&
             rect.left >= 0 &&
@@ -71,11 +71,11 @@
             rect.right <= (w.innerWidth || documentElement.clientWidth)) {
           if (!inView) {
             // object has entered viewport
-            $element.data('inview', true).trigger('inview', [true]);
+            $el.data('inview', true).trigger('inview', [true]);
           }
         } else if (inView) {
           // object has left viewport
-          $element.data('inview', false).trigger('inview', [false]);
+          $el.data('inview', false).trigger('inview', [false]);
         }
       }
     }
