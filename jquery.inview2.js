@@ -10,7 +10,10 @@
       w = window,
       documentElement = d.documentElement,
       expando = $.expando,
-      timer;
+      timer,
+      // pixel count margins to wrap viewport (negative gives extra time for dom to render)
+      yMargin = -300,
+      xMargin = 0;
 
   $.event.special.inview = {
     add: function(data) {
@@ -49,6 +52,7 @@
     $.each(inviewObjects, function(i, inviewObject) {
       var selector  = inviewObject.data.selector,
           $element  = inviewObject.$element;
+
       $elements = $elements.add(selector ? $element.find(selector) : $element);
     });
 
@@ -67,10 +71,10 @@
             height = $el.height(),
             width = $el.width();
         
-        if (rect.top >= (0 - height) &&
-            rect.left >= (0 - width) &&
-            rect.bottom <= ((w.innerHeight || documentElement.clientHeight) + height) &&
-            rect.right <= ((w.innerWidth || documentElement.clientWidth) + width)) {
+        if (rect.top >= (0 - height + yMargin) &&
+            rect.left >= (0 - width + xMargin) &&
+            rect.bottom <= ((w.innerHeight || documentElement.clientHeight) + height - yMargin) &&
+            rect.right <= ((w.innerWidth || documentElement.clientWidth) + width - xMargin)) {
           if (!inView) {
             // object has entered viewport
             $el.data('inview', true).trigger('inview', [true]);
