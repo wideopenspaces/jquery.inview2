@@ -63,12 +63,14 @@
 
         var $el = $($elements[i]),
             inView = $el.data('inview'),
-            rect = $el[0].getBoundingClientRect();
+            rect = $el[0].getBoundingClientRect(),
+            height = $el.height(),
+            width = $el.width();
         
-        if (rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (w.innerHeight || documentElement.clientHeight) &&
-            rect.right <= (w.innerWidth || documentElement.clientWidth)) {
+        if (rect.top >= (0 - height) &&
+            rect.left >= (0 - width) &&
+            rect.bottom <= ((w.innerHeight || documentElement.clientHeight) + height) &&
+            rect.right <= ((w.innerWidth || documentElement.clientWidth) + width)) {
           if (!inView) {
             // object has entered viewport
             $el.data('inview', true).trigger('inview', [true]);
