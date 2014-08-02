@@ -26,9 +26,9 @@
       //
       // By the way, iOS (iPad, iPhone, ...) seems to not execute, or at least delays
       // intervals while the user scrolls. Therefore the inview event might fire a bit late there
-      // 
+      //
       // Don't waste cycles with an interval until we get at least one element that
-      // has bound to the inview event.  
+      // has bound to the inview event.
       if (!timer && !$.isEmptyObject(inviewObjects)) {
          timer = setInterval(checkInView, 333);
       }
@@ -70,7 +70,11 @@
             rect = $el[0].getBoundingClientRect(),
             height = $el.height(),
             width = $el.width();
-        
+
+        // Ignoring an edge case until I can find out why
+        // this was firing on every element with gCBR 0,0
+        if (rect.top == 0 && rect.left == 0) { continue; }
+
         if (rect.top >= (0 - height + yMargin) &&
             rect.left >= (0 - width + xMargin) &&
             rect.bottom <= ((w.innerHeight || documentElement.clientHeight) + height - yMargin) &&
