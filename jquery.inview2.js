@@ -2,7 +2,11 @@
  * Jquery Inview 2
  * Version: 0.1
  * Author: Matthew Frey (mmmeff)
+ * Minor Assisting Editor: Jake Stetser (wideopenspaces)
+ *    - see https://github.com/wideopenspaces/jquery.inview2
  *    - forked from http://github.com/protonet/jquery.inview/
+ *
+ * Forked to ignore a strange edge case causing it to fire too early
  */
 (function ($) {
   var inviewObjects = {},
